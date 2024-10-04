@@ -1,10 +1,11 @@
 # questionnaire
 
-This template should help get you started developing with Vue 3 in Vite.
+## 線框搞
 
-## Recommended IDE Setup
+初步於Figma 中繪製了四頁的設計稿，展示問卷填寫頁面的初步視覺效果及介面佈局，作為未來開發的參考。
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+![alt text](./public/wireframes.png)
+
 
 ## Customize configuration
 
