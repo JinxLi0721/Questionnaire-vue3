@@ -1,7 +1,10 @@
 <script setup>
 import { ref } from "vue";
+import { useRouter } from "vue-router";
 import Card from "@/components/Card.vue";
 import questionnaires from "../data/questionnaire.json";
+
+const router = useRouter();
 
 const show = ref(false);
 const qu = ref();
@@ -11,6 +14,12 @@ const showModal = q => {
     qu.value = q;
 };
 
+const goQuestion = (event) => {
+    event.preventDefault();
+    if (qu.value) {
+        return router.push(`/questionnaires/${qu.value._id}`)
+    }
+}
 </script>
 
 <template>
@@ -34,7 +43,7 @@ const showModal = q => {
                         </p>
                     </div>
                     <div class="modal-footer">
-                        <a class="button" href="#">開始測驗</a>
+                        <a class="button" href="#" @click="goQuestion">開始測驗</a>
                         <a class="button" href="#" @click="show=false">關閉</a>
                     </div>
                 </div>
