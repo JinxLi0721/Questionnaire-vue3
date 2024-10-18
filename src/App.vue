@@ -1,8 +1,22 @@
 <script setup>
 import { RouterView } from 'vue-router';
+import{ ref, provide, nextTick} from 'vue'
+
+const isRouterAlive = ref(true)
+
+const reload = () => {
+    isRouterAlive.value = false;
+    nextTick(() => {
+        isRouterAlive.value = true
+    })
+}
+
+provide('reload', reload)
 </script>
 
 <template>
-    <RouterView/>
+    <RouterView v-slot="{Component}" v-if="isRouterAlive">
+        <component :is="Component"/>
+    </RouterView>
 
 </template>

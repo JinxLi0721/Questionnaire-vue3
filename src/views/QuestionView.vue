@@ -3,6 +3,7 @@ import { ref } from "vue";
 import { useRoute } from "vue-router";
 import Question from "@/components/Question.vue";
 import questionnaires from "../data/questionnaire.json";
+import Result from "@/components/Result.vue";
 
 const route = useRoute();
 const question = questionnaires.find(q => q._id === route.params._id);
@@ -15,8 +16,15 @@ const onOptionSelected = score => {
 };
 </script>
 <template>
-    <div class="instructions">
-        <h3>{{ question.instructions }}</h3>
+    <h2>{{ question.title }}</h2>
+    <div class="question-content" v-if="currentQuestionIndex != question.questions.length">
+        <div class="instructions">
+            <h3>{{ question.instructions }}</h3>
+        </div>
+        <Question :question="question.questions[currentQuestionIndex]" @selectOption="onOptionSelected" />
     </div>
-    <Question :question="question.questions[currentQuestionIndex]" @selectOption="onOptionSelected" />
+    <div class="result-content" v-else>
+        <Result :question="question" :totalScore="totalScore"/>
+    </div>
+    
 </template>
