@@ -16,15 +16,24 @@ const onOptionSelected = score => {
 };
 </script>
 <template>
-    <h2>{{ question.title }}</h2>
+    <h2 class="q-title">{{ question.title }}</h2>
     <div class="question-content" v-if="currentQuestionIndex != question.questions.length">
         <div class="instructions">
-            <h3>{{ question.instructions }}</h3>
+            <p>{{ question.instructions }}</p>
         </div>
         <Question :question="question.questions[currentQuestionIndex]" @selectOption="onOptionSelected" />
     </div>
     <div class="result-content" v-else>
-        <Result :question="question" :totalScore="totalScore"/>
+        <Result :question="question" :totalScore="totalScore" />
     </div>
-    
 </template>
+<style scoped>
+.q-title {
+    margin: 5% 15% 0 15%;
+    color: #534847;
+}
+.instructions {
+    margin-left: 15%;
+    margin-right: 15%;
+}
+</style>
