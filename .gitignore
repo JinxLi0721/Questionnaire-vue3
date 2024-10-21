@@ -30,4 +30,4 @@ coverage
 *.tsbuildinfo
 
 # datas
-/src/data/questionnaire.json
+# /src/data/questionnaire.json
