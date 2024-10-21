@@ -15,8 +15,14 @@ provide('reload', reload)
 </script>
 
 <template>
-    <RouterView v-slot="{Component}" v-if="isRouterAlive">
-        <component :is="Component"/>
-    </RouterView>
+        <RouterView v-slot="{Component}" v-if="isRouterAlive">
+            <component :is="Component"/>
+        </RouterView>
 
 </template>
+<style>
+html {
+    min-height: 100vh;
+    background-color:#9B8281;
+}
+</style>
