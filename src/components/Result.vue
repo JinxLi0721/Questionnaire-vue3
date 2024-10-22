@@ -1,11 +1,15 @@
 <script setup>
 import { defineProps, inject } from "vue";
-import { RouterLink, useRoute } from "vue-router";
+import { RouterLink } from "vue-router";
 
-const { question, totalScore } = defineProps(["question", "totalScore"]);
-
+const { question, totalScore, extraSuggest } = defineProps(["question", "totalScore", "extraSuggest"]);
 const reload = inject("reload");
-const grade = question.grades.find(item => totalScore <= item.gradesRange.max && totalScore >= item.gradesRange.min);
+
+let actualScore = totalScore;
+if (question._id === "668f3da1166f1af15a3cd750") {
+    actualScore *= 4;
+}
+const grade = question.grades.find(item => actualScore <= item.gradesRange.max && actualScore >= item.gradesRange.min);
 </script>
 <template>
     <div class="result-container">
@@ -21,6 +25,9 @@ const grade = question.grades.find(item => totalScore <= item.gradesRange.max &&
             <p class="suggestion">
                 {{ grade.suggestion }}
             </p>
+            <p class="suggestion" v-if="extraSuggest" v-for="suggestion in extraSuggest">
+                {{ suggestion }}
+            </p>
             <h4>參考資料：</h4>
             <p v-for="references in question.references">
                 {{ references }}
@@ -35,7 +42,7 @@ const grade = question.grades.find(item => totalScore <= item.gradesRange.max &&
 </template>
 <style scoped>
 .result-container {
-    background-color: rgb(253, 240, 240);;
+    background-color: rgb(253, 240, 240);
     box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
     border-radius: 5px;
 }

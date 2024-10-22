@@ -9,10 +9,17 @@ const route = useRoute();
 const question = questionnaires.find(q => q._id === route.params._id);
 const currentQuestionIndex = ref(0);
 const totalScore = ref(0);
+const extraSuggest = ref([]);
 
 const onOptionSelected = score => {
     totalScore.value += score;
     currentQuestionIndex.value++;
+};
+
+const onExtraSuggest = v => {
+    if (v) {
+        extraSuggest.value.push(v);
+    }
 };
 </script>
 <template>
@@ -21,10 +28,14 @@ const onOptionSelected = score => {
         <div class="instructions">
             <p>{{ question.instructions }}</p>
         </div>
-        <Question :question="question.questions[currentQuestionIndex]" @selectOption="onOptionSelected" />
+        <Question
+            :question="question.questions[currentQuestionIndex]"
+            @selectOption="onOptionSelected"
+            @extraSuggest="onExtraSuggest"
+        />
     </div>
     <div class="result-content" v-else>
-        <Result :question="question" :totalScore="totalScore" />
+        <Result :question="question" :totalScore="totalScore" :extraSuggest="extraSuggest" />
     </div>
 </template>
 <style scoped>

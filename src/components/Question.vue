@@ -2,10 +2,11 @@
 import { defineProps, defineEmits } from "vue";
 
 const { question } = defineProps(["question"]);
-const emit = defineEmits(["selectOption"]);
+const emit = defineEmits(["selectOption", "extraSuggest"]);
 
-const emitSelectedOpt = score => {
+const emitSelectedOpt = (score, extraSuggest) => {
     emit("selectOption", score);
+    emit("extraSuggest", extraSuggest);
 };
 </script>
 <template>
@@ -15,7 +16,11 @@ const emitSelectedOpt = score => {
         </p>
 
         <div class="options-container">
-            <div v-for="option in question.options" @click="emitSelectedOpt(option.score)" class="option">
+            <div
+                v-for="option in question.options"
+                @click="emitSelectedOpt(option.score, option.extraSuggest)"
+                class="option"
+            >
                 <span>{{ option.description }}</span>
             </div>
         </div>

@@ -12,6 +12,7 @@ const qu = ref();
 const showModal = q => {
     show.value = true;
     qu.value = q;
+    qu.value.explain = q.explain.split("/");
 };
 
 const goQuestion = event => {
@@ -27,8 +28,8 @@ const goQuestion = event => {
         <div class="overlay" v-if="show">
             <div class="modal-content">
                 <div class="modal-body">
-                    <p class="explain-text">
-                        {{ qu.explain }}
+                    <p class="explain-text" v-for="ex in qu.explain">
+                        {{ ex }}
                     </p>
                 </div>
                 <div class="modal-footer">
@@ -67,7 +68,7 @@ header {
 }
 
 .overlay {
-    position: absolute;
+    position: fixed;
     background-color: rgba(0, 0, 0, 0.57);
     display: flex;
     justify-content: center;
@@ -95,7 +96,6 @@ header {
 .modal-footer {
     display: flex;
     justify-content: space-around;
-
 }
 .modal-footer a {
     background-color: #534847;
