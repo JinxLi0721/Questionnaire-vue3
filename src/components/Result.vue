@@ -35,7 +35,7 @@ const grade = question.grades.find(item => totalScore <= item.gradesRange.max &&
 </template>
 <style scoped>
 .result-container {
-    background-color: aliceblue;
+    background-color: rgb(253, 240, 240);;
     box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
     border-radius: 5px;
 }
