@@ -12,7 +12,9 @@ const qu = ref();
 const showModal = q => {
     show.value = true;
     qu.value = q;
-    qu.value.explain = q.explain.split("/");
+    if(typeof(q.explain) === 'string') {
+        qu.value.explain = q.explain.split("/");
+    }
 };
 
 const goQuestion = event => {
