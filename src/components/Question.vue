@@ -1,12 +1,38 @@
 <script setup>
 import { defineProps, defineEmits } from "vue";
+import gsap from "gsap";
 
 const { question } = defineProps(["question"]);
 const emit = defineEmits(["selectOption", "extraSuggest"]);
 
-const emitSelectedOpt = (score, extraSuggest) => {
-    emit("selectOption", score);
-    emit("extraSuggest", extraSuggest);
+const emitSelectedOpt = (event, score, extraSuggest) => {
+    const target = event.target;
+
+    gsap.to(target, {
+        duration: 0.9,
+        backgroundColor: "rgb(207, 156, 135)",
+        color: "white",
+
+        onComplete: () => {
+            emit("selectOption", score);
+            emit("extraSuggest", extraSuggest);
+        }
+    });
+};
+const animateOnHover = (event, isEntering) => {
+    const target = event.target;
+
+    if (isEntering) {
+        gsap.to(target, {
+            duration: 0.3,
+            border: "5px solid rgba(207, 156, 135,0.6)"
+        });
+    } else {
+        gsap.to(target, {
+            duration: 0.3,
+            border: 0
+        });
+    }
 };
 </script>
 <template>
@@ -17,11 +43,14 @@ const emitSelectedOpt = (score, extraSuggest) => {
 
         <div class="options-container">
             <div
-                v-for="option in question.options"
-                @click="emitSelectedOpt(option.score, option.extraSuggest)"
+                v-for="(option, index) in question.options"
+                @click="emitSelectedOpt($event, option.score, option.extraSuggest)"
                 class="option"
+                :key="index"
+                @mouseenter="animateOnHover($event, true)"
+                @mouseleave="animateOnHover($event, false)"
             >
-                <span>{{ option.description }}</span>
+                {{ option.description }}
             </div>
         </div>
     </div>
@@ -38,8 +67,6 @@ const emitSelectedOpt = (score, extraSuggest) => {
 }
 .option {
     padding: 2%;
-    /* width: 100%; */
-
     margin-top: 15px;
     border-radius: 5px;
     background-color: rgb(253, 240, 240);

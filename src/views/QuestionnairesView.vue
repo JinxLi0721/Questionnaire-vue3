@@ -3,6 +3,7 @@ import { ref } from "vue";
 import { useRouter } from "vue-router";
 import Card from "@/components/Card.vue";
 import questionnaires from "../data/questionnaire.json";
+import gsap from "gsap";
 
 const router = useRouter();
 
@@ -12,7 +13,7 @@ const qu = ref();
 const showModal = q => {
     show.value = true;
     qu.value = q;
-    if(typeof(q.explain) === 'string') {
+    if (typeof q.explain === "string") {
         qu.value.explain = q.explain.split("/");
     }
 };
@@ -23,30 +24,47 @@ const goQuestion = event => {
         return router.push(`/questionnaires/${qu.value._id}`);
     }
 };
+
+function enter(el) {
+    gsap.to(el, {
+        duration:1,
+        y:0,
+        opacity:1,
+        delay: el.dataset.index * 0.2
+    })
+}
+function beforeEnter(el) {
+    el.style.transform = "translateY(-60px)"
+    el.style.opacity = 0;
+}
 </script>
 
 <template>
     <main>
-        <div class="overlay" v-if="show">
-            <div class="modal-content">
-                <div class="modal-body">
-                    <p class="explain-text" v-for="ex in qu.explain">
-                        {{ ex }}
-                    </p>
-                </div>
-                <div class="modal-footer">
-                    <a class="button" href="#" @click="goQuestion">開始測驗</a>
-                    <a class="button" href="#" @click="show = false">關閉</a>
+        <Transition name="fade">
+            <div class="overlay" v-if="show">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <p class="explain-text" v-for="ex in qu.explain">
+                            {{ ex }}
+                        </p>
+                    </div>
+                    <div class="modal-footer">
+                        <a class="button" href="#" @click="goQuestion">開始測驗</a>
+                        <a class="button" href="#" @click="show = false">關閉</a>
+                    </div>
                 </div>
             </div>
-        </div>
+        </Transition>
         <div class="container">
             <header>
                 <h1>自我評估問卷</h1>
             </header>
 
             <div class="list-container">
-                <Card v-for="question in questionnaires" :question="question" @click="showModal(question)" />
+                <transition-group @enter="enter" @before-enter="beforeEnter"  appear>
+                    <Card v-for="(question, index) in questionnaires" :question="question" @click="showModal(question)" :key="question._id" :data-index="index" />
+                </transition-group>
             </div>
         </div>
     </main>
@@ -106,5 +124,19 @@ header {
     border-radius: 5px;
     font-weight: 550;
     text-decoration: none;
+}
+
+.fade-enter-active {
+    transition: all 0.8s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.fade-leave-active {
+    transition: all 0.4s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.fade-enter-from,
+.fade-leave-to {
+    transform: translateY(20px);
+    opacity: 0;
 }
 </style>
